@@ -1,0 +1,45 @@
+# Copyright (c) 2019, SCALE Lab, Brown University
+# All rights reserved.
+
+# This code is revised from DRiLLs paper baseline result
+# Change environment from 7nm ASICs mapping to FPGA mapping
+
+# ======================================================================
+# This file holds parameters for running a DRiLLS agent for training and
+# inference. It sets up the RL environment along with the logic synthesis
+# environment to train the RL agent. 
+
+# change this to the abc binary path if the command is not recognized system-wide
+abc_binary: yosys-abc
+yosys_binary: yosys
+
+# path of the design file in one of the accepted formats by ABC
+design_file: arithmetic/max.v
+
+# standard cell library mapping
+mapping:
+  clock_period: 150   # in pico seconds
+  library_file: tech.lib
+
+# FPGA mapping - exlusive with the above
+fpga_mapping:
+  levels: 10000
+  lut_inputs: 6
+
+# add more optimization to the toolbox
+optimizations:
+  - rewrite
+  - rewrite -z
+  - refactor
+  - refactor -z
+  - resub
+  - resub -z
+  - balance
+
+# the directory to hold the playground an agent uses to practice
+playground_dir: playground
+
+# agent training parameters
+episodes: 50
+iterations: 30
+model_dir: /tmp/brain/model.ckpt   # must be absolute path
